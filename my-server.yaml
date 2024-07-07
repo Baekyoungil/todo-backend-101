@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-backend
+spec:
+  containers:
+  - name: backend
+    image: backend:latest
+    imagePullPolicy: Never
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-frontend
+spec:
+  containers:
+  - name: frontend
+    image: frontend:latest
+    imagePullPolicy: Never
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-frontend-svc
+spec:
+  type: NodePort
+  selector:
+    name: my-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 33000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-backend-svc
+spec:
+  type: NodePort
+  selector:
+    name: my-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 38080
+
